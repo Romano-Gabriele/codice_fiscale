@@ -1,0 +1,179 @@
+#include <stdio.h>
+#include <string.h>
+
+#define l 16
+
+    char nome[l];
+    char cognome[l];
+    char vocali[l];
+    char consonanti[l];
+    char su_vocali[l];
+    char su_consonanti[l];
+
+void name(char nome[])
+{
+    int ncons,nvoc,j;
+    
+    for(j=0;j<strlen(nome);j++)
+    {
+        switch(nome[j])
+        {
+            case 'a':
+            vocali[nvoc] = nome[j];
+            nvoc++;
+            break;
+            case 'e':
+            vocali[nvoc] = nome[j];
+            nvoc++;
+            break;
+            case 'i':
+            vocali[nvoc] = nome[j];
+            nvoc++;
+            break;
+            case 'o':
+            vocali[nvoc] = nome[j];
+            nvoc++;
+            break;
+            case 'u':
+            vocali[nvoc] = nome[j];
+            nvoc++;
+            break;
+            default:
+            consonanti[ncons] = nome[j];
+            ncons++;
+        }
+    }
+
+    /*for(j=0;j<strlen(nome);j++)
+    {
+        printf("%c", consonanti[j]);
+    }
+    
+    printf("\n");
+
+    for(j=0;j<strlen(nome);j++)
+    {
+        printf("%c", vocali[j]);
+    }
+    
+    printf("\nnome consonanti: %d\n", ncons);
+    printf("nome vocali: %d\n", nvoc);*/
+    
+    if(ncons >= 4)
+    {
+        printf("%c%c%c", consonanti[0], consonanti[2], consonanti[3]);
+    }
+    else
+    {
+        switch(ncons)
+        {
+            case 3:
+            printf("%c%c%c", consonanti[0], consonanti[1], consonanti[2]);
+            break;
+            case 2:
+            printf("%c%c%c", consonanti[0], consonanti[1], vocali[0]);
+            break;
+            case 1:
+            if(strlen(nome) == 2)
+                printf("%c%cx", consonanti[0], vocali[0]);
+            else
+                printf("%c%c%c", consonanti[0], vocali[0], vocali[1]);
+            break;
+            case 0:
+            if(strlen(nome) == 2)
+                printf("%c%cx", vocali[0], vocali[1]);
+            else
+                printf("? (errore)");
+            break;
+        }
+    }
+    printf("\n\n");
+}
+
+void surname(char cognome[])
+{
+    int su_ncons,su_nvoc,i;
+    
+    for(i=0;i<strlen(cognome);i++)
+    {
+        switch(cognome[i])
+        {
+            case 'a':
+            su_vocali[su_nvoc] = cognome[i];
+            su_nvoc++;
+            break;
+            case 'e':
+            su_vocali[su_nvoc] = cognome[i];
+            su_nvoc++;
+            break;
+            case 'i':
+            su_vocali[su_nvoc] = cognome[i];
+            su_nvoc++;
+            break;
+            case 'o':
+            su_vocali[su_nvoc] = cognome[i];
+            su_nvoc++;
+            break;
+            case 'u':
+            su_vocali[su_nvoc] = cognome[i];
+            su_nvoc++;
+            break;
+            default:
+            su_consonanti[su_ncons] = cognome[i];
+            su_ncons++;
+        }
+    }
+
+    /*for(i=0;i<strlen(cognome);i++)
+    {
+        printf("%c", su_consonanti[i]);
+    }
+    
+    printf("\n");
+
+    for(i=0;i<strlen(cognome);i++)
+    {
+        printf("%c", su_vocali[i]);
+    }
+    
+    printf("\nconsonanti: %d\n", su_ncons);
+    printf("vocali: %d\n", su_nvoc);*/
+    
+    if(su_ncons >= 3)
+    {
+        printf("%c%c%c", su_consonanti[0], su_consonanti[1], su_consonanti[2]);
+    }
+    else
+    {
+        switch(su_ncons)
+        {
+            case 2:
+            printf("%c%c%c", su_consonanti[0], su_consonanti[1], su_vocali[0]);
+            break;
+            case 1:
+            if(strlen(cognome) == 2)
+                printf("%c%cx", su_consonanti[0], su_vocali[0]);
+            else
+                printf("%c%c%c", su_consonanti[0], su_vocali[0], su_vocali[1]);
+            break;
+            case 0:
+            if(strlen(cognome) == 2)
+                printf("%c%cx", su_vocali[0], su_vocali[1]);
+            else
+                printf("? (errore)");
+            break;
+        }
+    }
+}
+
+int main()
+{
+    printf("Inserire nome: ");
+    scanf("%s", nome);
+    name(nome);
+    printf("Inserire cognome: ");
+    scanf("%s", cognome);
+    surname(cognome);
+    
+    return 0;
+}
