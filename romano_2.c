@@ -10,6 +10,7 @@ char consonanti[L];
 char vocali_c[L];
 char consonanti_c[L];
 char cf[16];
+char comune[L];
 
 //calcolo caratteri nome
 void name(char nome[])
@@ -260,9 +261,26 @@ void month(char mese[])
 {
     //dichiarazione variabili
     int i;
+    FILE *file_point = fopen("file_mese.txt", "r");
+    char *line[L];
+
+    printf("Inserire comune di nascita: ");
+    scanf("%s", comune);
+
+    if(!file_point)
+        printf("Errore file");
+    else
+        {
+            while(!EOF)
+            {
+                if(strstr(line, &comune)) //verifica che nella linea sia contenuta la stringa "comune"
+                    fgets(line, 4, file_point); //legge riga del file (primi 4 caratteri)
+            }
+        }
+
 
     //inserimento carattere mese di nascita
-    cf[8] = 'x';
+    //cf[8] = 'x';
 
     /*//stampa carattere mese di nascita
     printf("%c", cf[8]);*/

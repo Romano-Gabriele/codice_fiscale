@@ -1,0 +1,12 @@
+Gennaio   = A           
+Febbraio  = B           
+Marzo     = C           
+Aprile    = D           
+Maggio    = E           
+Giugno    = H
+Luglio    = L
+Agosto    = M
+Settembre = P
+Ottobre   = R
+Novembre  = S
+Dicembre  = T
