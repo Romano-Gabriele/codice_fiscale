@@ -5,12 +5,28 @@
 #define L 50
 #define LCF 16
 
+char nome[L];
+char cognome[L];
+char anno[L];
+int mese;
+char giorno[L];
+char sesso[1];
+char luogo[L];
+
 char vocali[L];
 char consonanti[L];
 char vocali_c[L];
 char consonanti_c[L];
 char cf[16];
 char comune[L];
+
+void maiuscolo(char stringa[])
+{
+    int i;
+
+    for(i=0;i<strlen(stringa);i++)
+        stringa[i] = toupper(stringa[i]);
+}
 
 //calcolo caratteri nome
 void name(char nome[])
@@ -19,8 +35,7 @@ void name(char nome[])
     int nvoc,ncons,i;
 
     //conversione in maiuscolo
-    for(i=0;i<strlen(nome);i++)
-        nome[i] = toupper(nome[i]);
+    maiuscolo(nome);
 
     //divisione vocali e consonanti
     for(i=0;i<strlen(nome);i++)
@@ -136,8 +151,7 @@ void surname(char cognome[])
     int nvoc=0,ncons=0,i;
 
     //conversione in maiuscolo
-    for(i=0;i<strlen(cognome);i++)
-        cognome[i] = toupper(cognome[i]);
+    maiuscolo(cognome);
 
     //divisione vocali_c e consonanti_c
     for(i=0;i<strlen(cognome);i++)
@@ -257,50 +271,48 @@ void year(char anno[])
 }
 
 //calcolo carattere mese di nascita
-void month(char mese[])
+void month(int mese)
 {
     //dichiarazione variabili
-    int i;
-    FILE *file_point = fopen("file_mese.txt", "r");
-    char *line[L];
+    char valori[] = "ABCDEHLMPRST";
 
-    printf("Inserire comune di nascita: ");
-    scanf("%s", comune);
-
-    if(!file_point)
-        printf("Errore file");
-    else
-        {
-            while(!EOF)
-            {
-                if(strstr(line, &comune)) //verifica che nella linea sia contenuta la stringa "comune"
-                    fgets(line, 4, file_point); //legge riga del file (primi 4 caratteri)
-            }
-        }
-
+    //verifica valore inserito
+    if(mese > 12)
+        printf("Mese non valido\n");
 
     //inserimento carattere mese di nascita
-    //cf[8] = 'x';
+    cf[8] = valori[mese-1];
 
     /*//stampa carattere mese di nascita
     printf("%c", cf[8]);*/
 }
 
 //calcolo carattere giorno di nascita
-void day(char giorno[])
+void day(char giorno[], char sesso[])
 {
     //dichiarazione variabili
     int i;
 
+    //conversione in maiuscolo
+    maiuscolo(sesso);
+
     //inserimento caratteri giorno di nascita
     if(strlen(giorno) == 1)
     {
-        cf[9] = '0';
+        if(sesso[0] = 'M')
+            cf[9] = '0';
+        else
+            cf[9] = '4';
+
         cf[10] = giorno[0];
     }
     else
     {
-        cf[9] = giorno[0];
+        if(sesso[0] = 'M')
+            cf[9] = giorno[0];
+        else
+            cf[9] = giorno[0] + 4;
+
         cf[10] = giorno[1];
     }
 
@@ -309,15 +321,44 @@ void day(char giorno[])
         printf("%c", cf[i]);*/
 }
 
+void place(char luogo[])
+{
+    //dichiarazione variabili
+    FILE *file_pointer;
+    char line[L];
+    int i,j;
+
+    //conversione in maiuscolo
+    maiuscolo(luogo);
+
+    //apertura file
+    file_pointer = fopen("comuni.txt", "r");
+
+    //verifica apertura file
+    if(!file_pointer)
+        printf("Errore nell'apertura del file\n");
+
+    while(!strstr(line, luogo))
+        fgets(line, L, file_pointer);
+
+    fclose(file_pointer);
+
+    //inserimento caratteri luogo di nascita
+    for(i=11;i<=14;i++)
+    {
+        cf[i] = line[j];
+        j++;
+    }
+
+    /*//stampa caratteri luogo di nascita
+    for(i=11;i<=14;i++)
+        printf("%c", cf[i]);*/
+}
+
 int main()
 {
     //dichiarazione variabili
     int i;
-    char nome[L];
-    char cognome[L];
-    char anno[L];
-    char mese[L];
-    char giorno[L];
 
     //inserimento dati
     printf("Inserire nome: ");
@@ -330,13 +371,21 @@ int main()
     scanf("%s", anno);
     year(anno);
     printf("Inserire mese di nascita: ");
-    scanf("%s", mese);
+    scanf("%d", &mese);
     month(mese);
     printf("Inserire giorno di nascita: ");
     scanf("%s", giorno);
-    day(giorno);
+    printf("Inserire sesso (M/F): ");
+    scanf("%c", sesso);
+    day(giorno, sesso);
+    printf("Inserire luogo di nascita: ");
+    scanf("%s", luogo);
+    place(luogo);
 
-    /*//stampa codice fiscale
+    //stampa codice fiscale
     for(i=0;i<LCF;i++)
-        printf("%c", cf[i]);*/
+        printf("%c", cf[i]);
+    printf("\n");
+
+    return 0;
 }
