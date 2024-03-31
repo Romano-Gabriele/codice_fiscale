@@ -21,6 +21,7 @@ char cf[LCF];
 char comune[L];
 
 char alpha[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+int conv[] = {1, 0, 5, 7, 9, 13, 15, 17, 19, 21, 2, 4, 18, 20, 11, 3, 6, 8, 12, 14, 16, 10, 22, 25, 24, 23};
 int check[LCF];
 
 void maiuscolo(char stringa[])
@@ -363,27 +364,54 @@ void place(char luogo[])
 void check_digit()
 {
     //dichiarazione variabili
-    FILE *fp;
-    int i,j=9;
-    char cp[L];
+    int i,j,c=0;
 
-    for(i=0;i<LCF;i+=2)
+    //inserimento posizioni pari
+    for(i=1;i<strlen(cf);i+=2)
     {
+        j=0;
+        while(cf[i] != alpha[j])
+            j++;
+        
+        if(j <= 25)
+            check[i] = j;
+        else
+            check[i] = j-26;
 
-        fp = fopen("conversione_pari.txt", "r");
-
-        //verifica apertura file
-        if(!fp)
-            printf("Errore nell'apertura del file\n");
-
-        //inserimento posizioni pari
-
-        fclose(fp);
+        /*//stampa posizioni pari 
+        printf("%d\t", check[i]);*/
     }
 
-    //stampa posizioni pari
-    for(i=0;i<LCF;i+=2)
-        printf("%d", check[i]);
+    //inserimento posizioni dispari
+    for(i=0;i<strlen(cf);i+=2)
+    {
+        j=0;
+        while(cf[i] != alpha[j])
+            j++;
+
+        if(j <= 25)
+            check[i] = conv[j];
+        else
+            check[i] = conv[j-26];
+
+        /*//stampa posizioni dispari
+        printf("%d\t", check[i]);*/
+    }
+
+    /*//stampa array convertito
+    for(i=0;i<LCF;i++)
+        printf("%d\t", check[i]);*/
+
+    //somma e divisione
+    for(i=0;i<LCF;i++)
+        c += check[i];
+    c = c%26;
+
+    //inserimento carattere di controllo
+    cf[15] = alpha[c];
+
+    /*//stampa carattere di controllo
+    printf("%c", cf[15]);*/
 }
 
 int main()
@@ -414,10 +442,10 @@ int main()
     place(luogo);
     check_digit();
 
-    /*//stampa codice fiscale
+    //stampa codice fiscale
     for(i=0;i<LCF;i++)
         printf("%c", cf[i]);
-    printf("\n");*/
+    printf("\n");
 
     return 0;
 }
