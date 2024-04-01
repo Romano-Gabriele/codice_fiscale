@@ -293,7 +293,7 @@ void month(int mese)
     printf("%c", cf[8]);*/
 }
 
-//calcolo carattere giorno di nascita
+//calcolo caratteri giorno di nascita
 void day(char giorno[], char sesso[])
 {
     //dichiarazione variabili
@@ -327,6 +327,7 @@ void day(char giorno[], char sesso[])
         printf("%c", cf[i]);*/
 }
 
+//calcolo caratteri luogo di nascita
 void place(char luogo[])
 {
     //dichiarazione variabili
@@ -361,6 +362,7 @@ void place(char luogo[])
         printf("%c", cf[i]);*/
 }
 
+//calcolo carattere di controllo
 void check_digit()
 {
     //dichiarazione variabili
