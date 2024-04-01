@@ -310,7 +310,7 @@ void day(char giorno[], char sesso[])
     //inserimento caratteri giorno di nascita
     if(strlen(giorno) == 1)
     {
-        if(sesso[0] = 'M')
+        if(sesso[0] == 'M')
             cf[9] = '0';
         else
             cf[9] = '4';
@@ -319,7 +319,7 @@ void day(char giorno[], char sesso[])
     }
     else
     {
-        if(sesso[0] = 'M')
+        if(sesso[0] == 'M')
             cf[9] = giorno[0];
         else
             cf[9] = giorno[0] + 4;
