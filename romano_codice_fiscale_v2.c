@@ -4,13 +4,15 @@
 
 #define L 50
 #define LCF 16
+#define A 4
 #define N 3
+#define G 2
 
 char nome[L];
 char cognome[L];
-char anno[L];
+char anno[A];
 int mese;
-char giorno[L];
+char giorno[G];
 char sesso[1];
 char luogo[L];
 
@@ -32,6 +34,7 @@ char cat[L];
 //variabili per validazione
 int x=0,y=0,v=0;
 
+//conversione stringa in maiuscolo
 void maiuscolo(char stringa[])
 {
     int i;
@@ -40,9 +43,10 @@ void maiuscolo(char stringa[])
         stringa[i] = toupper(stringa[i]);
 }
 
+//validazione stringa char
 int validazione_stringc(char stringa[])
 {
-    v=0;
+    v = 0;
 
     for(x=0;x<strlen(stringa);x++)
     {
@@ -54,20 +58,56 @@ int validazione_stringc(char stringa[])
     }
 
     if(v > 0)
+    {
+        printf("Errore\nIl dato inserito non può contenere valori numerici\n");
         return 1;
+    }
     else
         return 0;
+}
+
+//validazione stringa int
+int validazione_stringi(char stringa[])
+{
+    v = 0;
+
+    for(x=0;x<strlen(stringa);x++)
+    {
+        for(y=58;y<=126;y++)
+        {
+            if(stringa[x] == y)
+                v++;
+        }
+    }
+
+    if(v > 0)
+    {
+        printf("Errore\nIl dato inserito non è un valore numerico\n");
+        return 1;
+    }
+    else
+        return 0;
+}
+
+//validazione giorno di nascita inserito
+void validazione_giorno()
+{
+    while(validazione_stringi(giorno) || (giorno[0] == 51 && giorno[1] > 49))
+    {
+        printf("Giorno non valido\n");
+        printf("Inserire giorno di nascita: ");
+        scanf("%s", giorno);
+    }
 }
 
 //calcolo caratteri cognome
 void surname(char cognome[])
 {
-    //validazione cognome
+    //validazione cognome inserito
     while(validazione_stringc(cognome))
     {
         printf("Inserire cognome: ");
         scanf("%s", cognome);
-        validazione_stringc(cognome);
     }
 
     //dichiarazione variabili
@@ -182,12 +222,11 @@ void surname(char cognome[])
 //calcolo caratteri nome
 void name(char nome[])
 {
-    //validazione nome
+    //validazione nome inserito
     while(validazione_stringc(nome))
     {
-        printf("Inserire cognome: ");
+        printf("Inserire nome: ");
         scanf("%s", nome);
-        validazione_stringc(nome);
     }
 
     //dichiarazione variabili
@@ -308,11 +347,27 @@ void name(char nome[])
 //calcolo caratteri anno di nascita
 void year(char anno[])
 {
+    //validazione anno di nascita inserito
+    while(validazione_stringi(anno) || (anno[0] > 50 || (anno[1] != 48 && anno[1] != 57)))
+    {
+        printf("Anno non valido\n");
+        printf("Inserire anno di nascita: ");
+        scanf("%s", anno);
+    }
+
     //dichiarazione variabili
     int i;
 
-    cf[6] = anno[2];
-    cf[7] = anno[3];
+    if(strlen(anno) == 4)
+    {
+        cf[6] = anno[2];
+        cf[7] = anno[3];
+    }
+    else
+    {
+        cf[6] = anno[0];
+        cf[7] = anno[1];
+    }
 
     /*//stampa caratteri anno di nascita
     for(i=6;i<=7;i++)
@@ -325,9 +380,13 @@ void month(int mese)
     //dichiarazione variabili
     char valori[] = "ABCDEHLMPRST";
 
-    //verifica valore inserito
-    if(mese > 12)
+    //validazione mese di nascita inserito
+    while(mese > 12)
+    {
         printf("Mese non valido\n");
+        printf("Inserire mese di nascita: ");
+        scanf("%d", &mese);
+    }
 
     //inserimento carattere mese di nascita
     cf[8] = valori[mese-1];
@@ -344,6 +403,16 @@ void day(char giorno[], char sesso[])
 
     //conversione in maiuscolo
     maiuscolo(sesso);
+
+    //validazione sesso inserito
+    while(sesso[0] != 'M' && sesso[0] != 'F')
+    {
+        printf("Valore non valido\nInserire 'M' per gli individui di sesso maschile e 'F' per gli individui di sesso femminile\n");
+        printf("Inserire sesso (M/F): ");
+        scanf("%s", sesso);
+        maiuscolo(sesso);
+    }
+
 
     //inserimento caratteri giorno di nascita
     if(strlen(giorno) == 1)
@@ -579,6 +648,7 @@ void place_inv()
     fclose(file_pointer);
 }
 
+//calcolo del codice fiscale
 void calcolo()
 {
     //dichiarazione variabili
@@ -599,6 +669,7 @@ void calcolo()
     month(mese);
     printf("Inserire giorno di nascita: ");
     scanf("%s", giorno);
+    validazione_giorno(giorno);
     printf("Inserire sesso (M/F): ");
     scanf("%s", sesso);
     day(giorno, sesso);
@@ -613,8 +684,10 @@ void calcolo()
     printf("\n");
 }
 
+//calcolo del codice fiscale inverso
 void inverso()
 {
+    //inserimento codice fiscale
     printf("Inserire codice fiscale: ");
     scanf("%s", cfi);
     maiuscolo(cfi);
