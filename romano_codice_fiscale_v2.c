@@ -29,6 +29,9 @@ char cfi[LCF];
 char mesi[] = "ABCDEHLMPRST";
 char cat[L];
 
+//variabili per validazione
+int x=0,y=0,v=0;
+
 void maiuscolo(char stringa[])
 {
     int i;
@@ -37,9 +40,36 @@ void maiuscolo(char stringa[])
         stringa[i] = toupper(stringa[i]);
 }
 
+int validazione_stringc(char stringa[])
+{
+    v=0;
+
+    for(x=0;x<strlen(stringa);x++)
+    {
+        for(y=48;y<=57;y++)
+        {
+            if(stringa[x] == y)
+                v++;
+        }
+    }
+
+    if(v > 0)
+        return 1;
+    else
+        return 0;
+}
+
 //calcolo caratteri cognome
 void surname(char cognome[])
 {
+    //validazione cognome
+    while(validazione_stringc(cognome))
+    {
+        printf("Inserire cognome: ");
+        scanf("%s", cognome);
+        validazione_stringc(cognome);
+    }
+
     //dichiarazione variabili
     int nvoc=0,ncons=0,i;
 
@@ -152,6 +182,14 @@ void surname(char cognome[])
 //calcolo caratteri nome
 void name(char nome[])
 {
+    //validazione nome
+    while(validazione_stringc(nome))
+    {
+        printf("Inserire cognome: ");
+        scanf("%s", nome);
+        validazione_stringc(nome);
+    }
+
     //dichiarazione variabili
     int nvoc=0,ncons=0,i;
 
@@ -489,7 +527,7 @@ void date_inv()
     printf("/");
 
     //stampa anno di nascita
-    if(cfi[6] > 50 && cfi[7] > 52)
+    if(cfi[6] > 50)
         printf("19");
     else
         printf("20");
@@ -579,6 +617,7 @@ void inverso()
 {
     printf("Inserire codice fiscale: ");
     scanf("%s", cfi);
+    maiuscolo(cfi);
 
     name_inv();
     surname_inv();
