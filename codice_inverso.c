@@ -77,7 +77,7 @@ void date()
     printf("/");
 
     //stampa anno di nascita
-    if(cfi[6] > 50 && cfi[7] > 52)
+    if(cfi[6] > 50)
         printf("19");
     else
         printf("20");
