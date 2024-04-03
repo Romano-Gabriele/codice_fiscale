@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdbool.h>
 
 #define L 50
 #define LCF 16
@@ -33,6 +34,8 @@ char cat[L];
 
 //variabili per validazione
 int x=0,y=0,v=0;
+
+bool flag = 0;
 
 //conversione stringa in maiuscolo
 void maiuscolo(char stringa[])
@@ -455,11 +458,14 @@ void place(char luogo[])
 
     //verifica apertura file
     if(!file_pointer)
+    {
+        flag = 1;
         printf("Errore nell'apertura del file\n");
+    }
 
     while(!strstr(line, luogo))
         fgets(line, L, file_pointer);
-
+        
     fclose(file_pointer);
 
     //inserimento caratteri luogo di nascita
@@ -628,7 +634,10 @@ void place_inv()
 
     //verifica apertura file
     if(!file_pointer)
+    {
+        flag = 1;
         printf("Errore nell'apertura del file\n");
+    }
 
     //trova luogo di nascita
     while(!strstr(line, cat))
@@ -642,7 +651,8 @@ void place_inv()
         j++;
     }
 
-    printf("%s", luogo);
+    if(flag == 0)
+        printf("%s", luogo);
         
 
     fclose(file_pointer);
@@ -669,7 +679,7 @@ void calcolo()
     month(mese);
     printf("Inserire giorno di nascita: ");
     scanf("%s", giorno);
-    validazione_giorno(giorno);
+    validazione_giorno();
     printf("Inserire sesso (M/F): ");
     scanf("%s", sesso);
     day(giorno, sesso);
@@ -679,9 +689,12 @@ void calcolo()
     check_digit();
 
     //stampa codice fiscale
-    for(i=0;i<LCF;i++)
-        printf("%c", cf[i]);
-    printf("\n");
+    if(flag == 0)
+    {
+        for(i=0;i<LCF;i++)
+            printf("%c", cf[i]);
+        printf("\n");
+    }
 }
 
 //calcolo del codice fiscale inverso
